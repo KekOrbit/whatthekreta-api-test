@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import type React from "react"
 
 import { cn } from "@/lib/utils"
-import { login } from "@/api/login/route"
+import { loginToKreta } from "@/api/login/route"
 import { getSchools } from "@/api/schools/route" // New import for fetching schools
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -32,7 +32,6 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     useEffect(() => {
         getSchools().then((res) => {
             setSchoolOptions(res || []);
-            console.log(res);
         });
     }, []);
 
@@ -43,19 +42,14 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     }
 
     try {
-      const response = await login(username, password, selectedSchool.azonosito)
-
-      console.log(JSON.stringify(response))
+      const response = await loginToKreta({userName: username, password: password, instituteCode: selectedSchool.azonosito})
 
       if (response) {
-        // Use response directly as data
         const data = response
 
-        console.log("Login response data:", data)
-
-        if (data.bearerToken && data.refreshToken && data.expires_in) {
-          Cookies.set("bearer_token", data.bearerToken, { expires: data.expires_in / 86400 })
-          Cookies.set("refresh_token", data.refreshToken)
+        if (data.access_token && data.refresh_token && data.expires_in) {
+          Cookies.set("bearer_token", data.access_token, { expires: data.expires_in / 86400 })
+          Cookies.set("refresh_token", data.refresh_token)
           Cookies.set("institute_code", selectedSchool.azonosito)
           Cookies.set("user_name", username)
 
