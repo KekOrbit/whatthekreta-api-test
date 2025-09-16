@@ -8,7 +8,6 @@ import { getAuthData } from "@/lib/auth";
 
 export default function Main() {
   const navigate = useRouter();
-  const [grades, setGrades] = useState<any[]>([]);
   const [userData, setUserData] = useState<userData>({
     bearer_token: "",
     refresh_token: "",
