@@ -1,6 +1,5 @@
 "use client";
-import { useState, useEffect, use } from "react";
-import Cookies from "js-cookie";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { userData } from "@/lib/types";
